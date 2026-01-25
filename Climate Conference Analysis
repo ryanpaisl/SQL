@@ -1,0 +1,58 @@
+Climate Conference Project
+Database used: https://www.db-fiddle.com/f/pxMci1sLL945KHKYvpe9W6/1 
+
+
+-- Show each VIP and the event they are presenting (INNER JOIN)
+
+SELECT vips.first_name, vips.last_name, events.event_name, events.event_type
+FROM vips
+JOIN events
+	ON vips.event = events.event_id;
+
+-- Show all VIPs and whether they have hotel reservations (LEFT JOIN)
+
+SELECT vips.first_name, vips.last_name, reservations.hotel
+FROM vips
+LEFT JOIN reservations
+	ON vips.member_id = reservations.member_id;
+
+-- Show VIPs, their event names, and their hotel names (USING MULTIPLE JOINS)
+
+SELECT vips.first_name, vips.last_name, events.event_name, hotels.hotel_name
+FROM vips
+JOIN events
+	ON vips.event = events.event_id
+JOIN reservations
+	ON vips.member_id = reservations.member_id
+JOIN hotels
+	ON reservations.hotel = hotels.hotel_id;
+    
+-- Show who is giving feedback to whom (SELF-JOIN)
+
+SELECT 
+	reviewers.first_name AS reviewer_first, 
+	reviewers.last_name AS reviewer_last,
+	speakers.first_name AS speaker_first,
+	speakers.last_name AS speaker_last
+FROM vips reviewers
+JOIN vips speakers
+	ON reviewers.provides_feedback_to = speakers.member_id;
+
+-- Find VIPs who are not speaking at any event (QUERY WITH A SUBQUERY)
+
+SELECT first_name, last_name
+FROM vips
+WHERE member_id IN 
+(SELECT member_id FROM vips WHERE event IS NULL);
+
+--Find VIPs attending hotel, welcome party, AND dinner (CUSTOM QUERY)
+
+SELECT vips.first_name, vips.last_name
+FROM vips
+JOIN reservations
+	ON vips.member_id = reservations.member_id
+WHERE reservations.welcome_rsvp = 1
+	AND reservations.dinner_rsvp = 1;
+
+
+
