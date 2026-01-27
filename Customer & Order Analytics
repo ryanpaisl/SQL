@@ -46,3 +46,23 @@ ON FEB.orderid=cust.order_id
 WHERE Feb.Quantity>2
 AND length(orderid) = 6
 AND orderid <> 'Order ID';
+
+--Which product(s) start with a price of 7?
+SELECT distinct Product, price
+FROM BIT_DB.FebSales
+WHERE price like '7%';
+
+--Which product(s) end with a price of .99?
+SELECT distinct Product, Price
+FROM BIT_DB.FebSales
+WHERE Price like '%.99';
+
+-- Find orderIDs in March sales where the orderID starts with the characters '16', then an unknown character, followed by a '0', and any number of characters for the rest.
+SELECT orderID
+FROM BIT_DB.MarSales
+WHERE orderID LIKE '16_0%';
+
+-- How many orders were placed on 02/18/19?
+SELECT sum(quantity) AS num_ord
+FROM BIT_DB.FebSales
+WHERE orderdate like '02/18/19%'
